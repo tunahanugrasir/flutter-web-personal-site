@@ -9,12 +9,28 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin {
   late PageController pageController;
+  late AnimationController animationController;
   @override
   void initState() {
     super.initState();
     pageController = PageController();
+
+    animationController = AnimationController(vsync: this);
+
+    animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        pageController.animateToPage(1, curve: Curves.bounceOut, duration: const Duration(seconds: 3));
+        animationController.reset();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -25,6 +41,14 @@ class _HomeViewState extends State<HomeView> {
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         children: [
+          // Container(
+          //   color: const Color(0xffc2f970),
+          //   child: Lottie.asset("assets/lottie/hand4.json", controller: animationController, repeat: false,
+          //       onLoaded: (animation) {
+          //     animationController.duration = animation.duration;
+          //     animationController.forward();
+          //   }),
+          // ),
           FirstPage(
             pageController: pageController,
           ),
