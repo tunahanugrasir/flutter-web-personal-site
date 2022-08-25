@@ -12,6 +12,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin {
   late PageController pageController;
   late AnimationController animationController;
+  bool textOnTap = true;
   @override
   void initState() {
     super.initState();
@@ -52,6 +53,45 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           FirstPage(
             pageController: pageController,
           ),
+          Container(
+              color: const Color(0xff9191e9),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 68.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 2,
+                        color: Colors.white,
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                textOnTap = !textOnTap;
+                              });
+                            },
+                            child: AnimatedCrossFade(
+                              firstChild: const Text(
+                                "FLUTTER",
+                                style: TextStyle(fontSize: 100),
+                              ),
+                              secondChild: const Text(
+                                "DEVELOPER",
+                              ),
+                              crossFadeState: textOnTap ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                              duration: const Duration(seconds: 2),
+                              firstCurve: Curves.bounceInOut,
+                              secondCurve: Curves.easeInOut,
+                              sizeCurve: Curves.elasticInOut,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: SvgPicture.asset("assets/canva/3.svg")),
+                ],
+              )),
           Container(color: const Color(0xff29339b), child: Image.asset("assets/Saly-13.png")),
           Container(
             color: Colors.amber,
@@ -61,7 +101,6 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                   "assets/svg_image.svg",
                 )),
           ),
-          Container(color: const Color(0xff9191e9), child: SvgPicture.asset("assets/canva/3.svg")),
         ],
       ),
     );

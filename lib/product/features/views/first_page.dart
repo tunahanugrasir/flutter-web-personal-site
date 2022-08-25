@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:kartal/kartal.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -18,9 +17,13 @@ class _FirstPageState extends State<FirstPage> with SingleTickerProviderStateMix
   bool isSayHello = false;
   bool isNameClick = false;
   bool isCounterStart = false;
+  final String _text =
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
   int count = 0;
   late AnimationController animationController;
   late Animation alignAnimation;
+  bool textOnTap = true;
+
   @override
   void initState() {
     animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
@@ -68,7 +71,9 @@ class _FirstPageState extends State<FirstPage> with SingleTickerProviderStateMix
                     isPressed = !isPressed;
                   });
                 },
-                child: AnimatedContainer(
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: AnimatedContainer(
                     height: 300,
                     width: 300,
                     curve: Curves.easeInQuint,
@@ -91,87 +96,38 @@ class _FirstPageState extends State<FirstPage> with SingleTickerProviderStateMix
                         ),
                       ],
                     ),
-                    child: isPressed
-                        ? Center(
-                            child: AnimatedCrossFade(
-                              duration: const Duration(seconds: 1),
-                              crossFadeState: CrossFadeState.showFirst,
-                              firstChild: Stack(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "I'm Tunahan, you can call me Tuna",
-                                      style: context.textTheme.headline1
-                                          ?.copyWith(fontSize: 75, color: Colors.green.shade900.withOpacity(0.1)),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "DEVELOPER",
-                                      style: context.textTheme.bodyText2?.copyWith(fontSize: 30),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              secondChild: Stack(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "FLUTTER",
-                                      style: context.textTheme.headline1
-                                          ?.copyWith(fontSize: 75, color: Colors.green.shade900.withOpacity(0.1)),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "I'm Tunahan, you can call me Tuna",
-                                      style: context.textTheme.bodyText2?.copyWith(fontSize: 30),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            textOnTap = !textOnTap;
+                          });
+                        },
+                        child: AnimatedCrossFade(
+                          firstChild: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30),
+                            child: Text(
+                              "FLUTTER",
+                              style: TextStyle(fontSize: 80),
                             ),
-                          )
-                        : Center(
-                            child: AnimatedCrossFade(
-                              duration: const Duration(seconds: 1),
-                              crossFadeState: CrossFadeState.showSecond,
-                              firstChild: Stack(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "I'm Tunahan, you can call me Tuna",
-                                      style: context.textTheme.headline1
-                                          ?.copyWith(fontSize: 75, color: Colors.green.shade900.withOpacity(0.1)),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "DEVELOPER",
-                                      style: context.textTheme.bodyText2?.copyWith(fontSize: 30),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              secondChild: Stack(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "FLUTTER",
-                                      style: context.textTheme.headline1
-                                          ?.copyWith(fontSize: 75, color: Colors.green.shade900.withOpacity(0.1)),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "I'm Tunahan, you can call me Tuna",
-                                      style: context.textTheme.bodyText2?.copyWith(fontSize: 30),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          ),
+                          secondChild: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: Text(
+                              _text,
+                              style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
                             ),
-                          )),
+                          ),
+                          crossFadeState: textOnTap ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                          duration: const Duration(seconds: 2),
+                          firstCurve: Curves.bounceInOut,
+                          secondCurve: Curves.easeInOut,
+                          sizeCurve: Curves.elasticInOut,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             Expanded(
@@ -185,73 +141,60 @@ class _FirstPageState extends State<FirstPage> with SingleTickerProviderStateMix
                   });
                 },
                 child: AnimatedContainer(
-                    height: 300,
-                    width: 300,
-                    curve: Curves.easeInQuint,
-                    duration: const Duration(milliseconds: 500),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: const Color(0xffc2f970),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: -distance,
-                          blurRadius: blur,
-                          color: const Color.fromARGB(255, 219, 254, 166),
-                          inset: isPressed,
+                  height: 300,
+                  width: 300,
+                  curve: Curves.easeInQuint,
+                  duration: const Duration(milliseconds: 500),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: const Color(0xffc2f970),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: -distance,
+                        blurRadius: blur,
+                        color: const Color.fromARGB(255, 219, 254, 166),
+                        inset: isPressed,
+                      ),
+                      BoxShadow(
+                        offset: distance,
+                        blurRadius: blur,
+                        color: Colors.green.shade900,
+                        inset: isPressed,
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          textOnTap = !textOnTap;
+                        });
+                      },
+                      child: AnimatedCrossFade(
+                        firstChild: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          child: Text(
+                            "DEVELOPER",
+                            style: TextStyle(fontSize: 80),
+                            maxLines: 1,
+                          ),
                         ),
-                        BoxShadow(
-                          offset: distance,
-                          blurRadius: blur,
-                          color: Colors.green.shade900,
-                          inset: isPressed,
+                        secondChild: Padding(
+                          padding: const EdgeInsets.all(40.0),
+                          child: Text(
+                            _text,
+                            style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ],
+                        crossFadeState: textOnTap ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                        duration: const Duration(seconds: 2),
+                        firstCurve: Curves.bounceInOut,
+                        secondCurve: Curves.easeInOut,
+                        sizeCurve: Curves.elasticInOut,
+                      ),
                     ),
-                    child: isPressed
-                        ? Stack(
-                            children: [
-                              Center(
-                                child: AnimatedScale(
-                                  duration: const Duration(seconds: 3),
-                                  scale: 0.5,
-                                  curve: Curves.bounceInOut,
-                                  child: Text(
-                                    "I'm Tunahan, you can call me Tuna",
-                                    style: context.textTheme.headline1
-                                        ?.copyWith(fontSize: 75, color: Colors.green.shade900.withOpacity(0.1)),
-                                  ),
-                                ),
-                              ),
-                              Center(
-                                child: AnimatedScale(
-                                  duration: const Duration(seconds: 3),
-                                  scale: 3,
-                                  curve: Curves.bounceInOut,
-                                  child: Text(
-                                    "DEVELOPER",
-                                    style: context.textTheme.bodyText2?.copyWith(fontSize: 30),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Stack(
-                            children: [
-                              Center(
-                                child: Text(
-                                  "DEVELOPER",
-                                  style: context.textTheme.headline1
-                                      ?.copyWith(fontSize: 75, color: Colors.green.shade900.withOpacity(0.1)),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  "I'm Tunahan, you can call me Tuna",
-                                  style: context.textTheme.bodyText2?.copyWith(fontSize: 30),
-                                ),
-                              ),
-                            ],
-                          )),
+                  ),
+                ),
               ),
             ),
           ],
